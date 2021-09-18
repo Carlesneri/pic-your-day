@@ -11,7 +11,7 @@ export default function App() {
   return (
     <NavigationContainer style={{fontFamily: 'Inter-Black'}}>
       <Stack.Navigator 
-        initialRouteName="Home"
+        initialRouteName="Camera"
         screenOptions={screenStackStyles}
         >
         <Stack.Screen name="Pic your day" component={HomeScreen} />
