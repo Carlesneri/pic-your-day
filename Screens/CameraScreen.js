@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Camera } from 'expo-camera'
-import * as FileSystem from 'expo-file-system'
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native'
 import HomeScreen from './HomeScreen'
 import usePictureTaken from '../hooks/usePictureTaken'
@@ -11,15 +10,17 @@ export default function CameraView() {
   
   const [camera, setCamera] = useState(null)
   const [hasCameraPermission, setHasCameraPermission] = useState(null)
-  const [cameraType, setCameraType] = useState(Camera.Constants.Type.front)
-  
+  const [cameraType, setCameraType] = useState(Camera.Constants.Type.front)  
   const {takePic, pictureTaken} = usePictureTaken()
 
   useEffect(() => {
     console.log({pictureTaken})
   }, [pictureTaken])
 
-  const switchCam = () => {}
+  const switchCam = () => {
+    cameraType === 'back' ? setCameraType('front')
+    : setCameraType('back') 
+  }
 
   useEffect(() => {  
     // console.log(FileSystem.documentDirectory)
@@ -30,21 +31,27 @@ export default function CameraView() {
   if(hasCameraPermission) {
     return (
       <Camera 
-        type={cameraType} 
-        style={styles.camera} 
-        ref={ref => setCamera(ref)}
+      type={cameraType} 
+      style={styles.camera} 
+      ref={ref => setCamera(ref)}
       >
         <View style={styles.buttons}>
-          <TouchableOpacity style={styles.button} onPress={() => takePic(camera)}>
+          <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => takePic(camera)}
+          >
             <Image source={takePicIcon} style={styles.imageButton} />
           </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.button} onPress={switchCam}>
+          <TouchableOpacity 
+          style={styles.button} 
+          onPress={switchCam}
+          >
             <Image source={switchCamIcon} style={styles.imageButton} />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
       </Camera>
     )
-  } else {
+} else {
     return <HomeScreen />
   }
 }

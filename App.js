@@ -4,12 +4,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import HomeScreen from './Screens/HomeScreen'
 import CameraScreen from './Screens/CameraScreen'
 import { screenStackStyles } from './globalStyles'
+import { useFonts } from 'expo-fonts'
 
 const Stack = createNativeStackNavigator()
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    'Grechen': require('./assets/fonts/GrechenFuemen-Regular.ttf'),
+  })
+
   return (
-    <NavigationContainer style={{fontFamily: 'Inter-Black'}}>
+    <NavigationContainer style={{fontFamily: 'Grechen'}}>
       <Stack.Navigator 
         initialRouteName="Camera"
         screenOptions={screenStackStyles}
@@ -20,5 +25,7 @@ export default function App() {
     </NavigationContainer>
   )
 }
+
+
 
 
