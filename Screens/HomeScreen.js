@@ -1,35 +1,57 @@
-import React, { useState } from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native'
-import { Camera } from 'expo-camera'
+import React, { useEffect, useState } from 'react'
+import { View, Button, StyleSheet, Text, FlatList } from 'react-native'
+import { BACKGROUND_COLOR } from '../CONSTANTS'
+import AlbumItem from '../components/AlbumItem'
+import globalStyles from '../styles/globalStyles'
+import * as Font from 'expo-font'
 
 export default function HomeScreen({ navigation }) {
-  const [hasPermission, setHasPermission] = useState(false)
 
-  async function handleClickOpenCamera() {
-    const { status } = await Camera.requestPermissionsAsync();
-    if(status === 'granted') {
-      setHasPermission(true)
-      navigation.navigate('Camera')
-    }
+  const [fontLoaded, setFontLoaded] = useState(false)
+
+  useEffect(() => {
+    Font.loadAsync({
+      'NotoSansJP-Regular': require('../assets/fonts/NotoSansJP-Regular.otf'),
+      'Grechen': require('../assets/fonts/GrechenFuemen-Regular.ttf'),
+    })
+    .then(() => setFontLoaded(true))
+  }, [])
+
+  const [albums, setAlbums] = useState([{name: 'first album'}])
+
+  const renderAlbumItem = ({ item }) => <AlbumItem album={item} />
+
+  const handleClickCreateAlbum = () => {
+    console.log('create album')
   }
 
-  function handleClickCameraScreenButton() {
-    handleClickOpenCamera() 
-  }
+  return(
+    fontLoaded ? 
+    <>
+      <View style={globalStyles.container} >  
+        <Text style={globalStyles.h1}>My albums</Text>
 
-  return (
-    <View style={styles.container}>  
-      <Button color="purple" title="Camera screen" onPress={handleClickCameraScreenButton}/>
-    </View>
+        {
+          albums.length ? 
+          
+          <FlatList
+            data={albums}
+            renderItem={renderAlbumItem}
+            keyExtractor={album => album.name}
+          />
+          :
+          <Text>No Albums</Text>
+        }
+
+        <Button
+        color="purple"
+        title="Create Album"
+        onPress={handleClickCreateAlbum}
+        />
+      </View>
+    </>
+    :
+    <Text>No Fonts</Text>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 32,
-    flex: 1,
-    backgroundColor: '#eee',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  // const styles = StyleSheet.create({})

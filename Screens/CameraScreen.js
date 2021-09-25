@@ -1,21 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Camera } from 'expo-camera'
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native'
 import HomeScreen from './HomeScreen'
 import usePictureTaken from '../hooks/usePictureTaken'
-const takePicIcon = require('../assets/icons/takePic.svg')
-const switchCamIcon = require('../assets/icons/switchCam.svg')
+import PictureTaken from '../components/PictureTaken'
+import { Dimensions } from 'react-native'
+import {BACKGROUND_COLOR} from '../CONSTANTS'
 
-export default function CameraView() {
+console.log(Platform.OS)
+const takePicIcon = require('../assets/icons/takePic.png')
+const switchCamIcon = require('../assets/icons/switchCam.png')
+const {width: screenWidth, height: screenHeight} = Dimensions.get("screen")
+
+export default function CameraScreen({navigation}) {
   
   const [camera, setCamera] = useState(null)
   const [hasCameraPermission, setHasCameraPermission] = useState(null)
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.front)  
-  const {takePic, pictureTaken} = usePictureTaken()
-
-  useEffect(() => {
-    console.log({pictureTaken})
-  }, [pictureTaken])
+  const {takePic, pictureTaken, setPictureTaken, setPictureSaved} = usePictureTaken()
 
   const switchCam = () => {
     cameraType === 'back' ? setCameraType('front')
@@ -23,33 +25,45 @@ export default function CameraView() {
   }
 
   useEffect(() => {  
-    // console.log(FileSystem.documentDirectory)
     Camera.getPermissionsAsync()
     .then(({status}) => setHasCameraPermission(status === 'granted'))
   },[])
 
   if(hasCameraPermission) {
     return (
-      <Camera 
-      type={cameraType} 
-      style={styles.camera} 
-      ref={ref => setCamera(ref)}
-      >
-        <View style={styles.buttons}>
-          <TouchableOpacity 
-          style={styles.button} 
-          onPress={() => takePic(camera)}
+      <>
+        {
+          pictureTaken ? 
+          <PictureTaken
+          navigation={navigation}
+          pictureTaken={pictureTaken}
+          setPictureTaken={setPictureTaken}
+          setPictureSaved={setPictureSaved}
+          screenWidth={screenWidth}
+          screenHeight={screenHeight} /> 
+          :
+          <Camera 
+          type={cameraType} 
+          style={styles.camera} 
+          ref={ref => setCamera(ref)}
           >
-            <Image source={takePicIcon} style={styles.imageButton} />
-          </TouchableOpacity>
-          <TouchableOpacity 
-          style={styles.button} 
-          onPress={switchCam}
-          >
-            <Image source={switchCamIcon} style={styles.imageButton} />
-          </TouchableOpacity>
-        </View>
-      </Camera>
+            <View style={styles.buttons}>
+              <TouchableOpacity 
+              style={styles.button} 
+              onPress={switchCam}
+              >
+                <Image source={switchCamIcon} style={styles.imageButton} />
+              </TouchableOpacity>
+              <TouchableOpacity 
+              style={styles.button} 
+              onPress={() => takePic(camera)}
+              >
+                <Image source={takePicIcon} style={styles.imageButton} />
+              </TouchableOpacity>
+            </View>
+          </Camera>
+        }
+      </>
     )
 } else {
     return <HomeScreen />
@@ -62,25 +76,25 @@ const styles = StyleSheet.create({
     aspectRatio: 3/4
   },
   buttons: {
+    paddingHorizontal: 16,
     display: 'flex',
+    // flexGrow: 1,
     flexDirection: 'row',
     position: 'absolute',
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    width: screenWidth,
+    // backgroundColor: 'rgba(0, 0, 0, 0.25)',
     bottom: 0,
-    width: '100%',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   button: {
-    // width: 64,
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
-    // height: 32,
     margin: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 8,
-    borderRadius: 2
+    backgroundColor: BACKGROUND_COLOR,
+    padding: 16,
+    borderRadius: 32
   },
   imageButton: {
     width: 24,
