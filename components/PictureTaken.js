@@ -2,16 +2,18 @@ import React from 'react'
 import { TouchableOpacity, View, Image, StyleSheet, Dimensions } from 'react-native'
 import { BACKGROUND_COLOR } from '../CONSTANTS'
 const {width: screenWidth, height: screenHeight} = Dimensions.get("screen")
-
+console.log()
 
 const checkIcon = require('../assets/icons/check.png')
 const crossIcon = require('../assets/icons/cross.png')
 
-export default function PictureTaken({navigation, pictureTaken, setPictureTaken,  setPictureSaved}) {
+export default function PictureTaken({navigation, album, pictureTaken, setPictureTaken, savePic}) {
   
-  function savePicture() {
-    setPictureSaved(pictureTaken)
-    navigation.navigate('Home')
+  async function savePicture() {
+    await savePic(pictureTaken, album)
+    .catch(console.error)
+    
+    navigation.navigate('Album', {album})
   }
 
   return (
@@ -51,7 +53,10 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUND_COLOR
   },
   picture: {
-    resizeMode: 'cover'
+    width: screenWidth * .8,
+    height: screenHeight,
+    resizeMode: 'contain',
+    borderRadius: 4
   },
   buttons: {
     paddingHorizontal: 16,

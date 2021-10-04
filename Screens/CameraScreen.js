@@ -7,17 +7,18 @@ import PictureTaken from '../components/PictureTaken'
 import { Dimensions } from 'react-native'
 import {BACKGROUND_COLOR} from '../CONSTANTS'
 
-console.log(Platform.OS)
 const takePicIcon = require('../assets/icons/takePic.png')
 const switchCamIcon = require('../assets/icons/switchCam.png')
 const {width: screenWidth, height: screenHeight} = Dimensions.get("screen")
 
-export default function CameraScreen({navigation}) {
+export default function CameraScreen({navigation, route}) {
+
+  const {album} = route.params
   
   const [camera, setCamera] = useState(null)
   const [hasCameraPermission, setHasCameraPermission] = useState(null)
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.front)  
-  const {takePic, pictureTaken, setPictureTaken, setPictureSaved} = usePictureTaken()
+  const {takePic, pictureTaken, savePic, setPictureTaken} = usePictureTaken()
 
   const switchCam = () => {
     cameraType === 'back' ? setCameraType('front')
@@ -36,9 +37,10 @@ export default function CameraScreen({navigation}) {
           pictureTaken ? 
           <PictureTaken
           navigation={navigation}
+          savePic={savePic}
+          album={album}
           pictureTaken={pictureTaken}
           setPictureTaken={setPictureTaken}
-          setPictureSaved={setPictureSaved}
           screenWidth={screenWidth}
           screenHeight={screenHeight} /> 
           :
