@@ -7,6 +7,8 @@ const deleteIcon = require('../assets/icons/delete.png')
 
 export default function AlbumItem({album, setAlbums, navigation}) {
 
+  
+
   function handleClickDeleteAlbum() {
     FileSystem.deleteAsync(`${FileSystem.documentDirectory}albums/${album.name}`)
     .then(() => {
