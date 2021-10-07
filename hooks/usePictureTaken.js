@@ -21,7 +21,6 @@ export default () => {
   }
 
   const savePic = async (uri, album) => {
-    // const newDirection = `${FileSystem.documentDirectory}albums/${album.name}/${getFileName(uri)}`
     const newDirection = `${FileSystem.documentDirectory}albums/${album.name}/${getFileName(uri)}.${getFileExtension(uri)}`
 
     await FileSystem.copyAsync({
@@ -30,7 +29,7 @@ export default () => {
     })
     .catch(console.error)
       
-    console.log('Picture Saved: ', newDirection)
+    console.log('Picture Saved:', newDirection)
     return newDirection
   }
 

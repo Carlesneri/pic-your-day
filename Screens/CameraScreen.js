@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react'
 import { Camera } from 'expo-camera'
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native'
 import HomeScreen from './HomeScreen'
@@ -6,6 +5,7 @@ import usePictureTaken from '../hooks/usePictureTaken'
 import PictureTaken from '../components/PictureTaken'
 import { Dimensions } from 'react-native'
 import {BACKGROUND_COLOR} from '../CONSTANTS'
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 const takePicIcon = require('../assets/icons/takePic.png')
 const switchCamIcon = require('../assets/icons/switchCam.png')

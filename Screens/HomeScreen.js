@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { View, Button, StyleSheet, Text, FlatList, Modal, TextInput } from 'react-native'
+import { View, Button, Text, FlatList, Modal, TextInput } from 'react-native'
 import AlbumItem from '../components/AlbumItem'
 import globalStyles from '../styles/globalStyles'
 import * as Font from 'expo-font'
-import * as FileSystem from 'expo-file-system'
 import useAlbums from '../hooks/useAlbums'
 
 export default function HomeScreen({ navigation }) {
@@ -26,14 +25,6 @@ export default function HomeScreen({ navigation }) {
     })
     .then(() => setFontLoaded(true))
   }, [])
-
-  // useEffect(() => {
-  //   FileSystem.readDirectoryAsync(FileSystem.documentDirectory + 'albums/')
-  //   .then(albums => {
-  //     console.log({albums})
-  //   })
-  //   .catch(console.error)
-  // }, [albums])
 
   return(
     fontLoaded ? 
