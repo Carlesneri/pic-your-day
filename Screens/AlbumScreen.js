@@ -13,6 +13,11 @@ const documentDirectory = FileSystem.documentDirectory
 
 export default function AlbumScreen({route, navigation}) {
   const {album} = route.params
+
+  if(!album) {
+    navigation.navigate('Home')
+  }
+
   const {getAlbumPictures} = useAlbums()
   const [pics, setPics] = useState([])
   const [picModalVisibility, setPicModalVisibility] = useState(false)
@@ -76,11 +81,13 @@ export default function AlbumScreen({route, navigation}) {
         />
       </View>
       <Modal
-      children={<PicModal
+      children={
+        <PicModal
         pic={picPressed}
         modalCloser={handleClickClosePicModal}
         album={album}
-        />} 
+        />
+      } 
       visible={picModalVisibility}/>
     </View>
   )

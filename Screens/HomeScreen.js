@@ -68,4 +68,3 @@ export default function HomeScreen({ navigation }) {
     <Text>No Fonts</Text>
   )
 }
-  // const styles = StyleSheet.create({})

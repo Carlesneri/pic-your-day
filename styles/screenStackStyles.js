@@ -7,6 +7,7 @@ export default {
   headerTintColor: '#fff',
   headerTitleStyle: {
     fontWeight: 'bold',
-  }
+  },
+  // headerShown: false
 }
 

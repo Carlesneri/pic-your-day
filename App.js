@@ -25,9 +25,10 @@ export default function App() {
           <Stack.Navigator 
             initialRouteName="Home"
             screenOptions={screenStackStyles}
+            style={{}}
             >
             <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Camera" component={CameraScreen} />
+            <Stack.Screen name="Camera" component={CameraScreen} options={{headerShown: false}}/>
             <Stack.Screen name="Album" component={AlbumScreen} />
           </Stack.Navigator>
         )

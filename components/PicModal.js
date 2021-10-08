@@ -4,10 +4,6 @@ import { BACKGROUND_COLOR } from '../CONSTANTS'
 import globalStyles from '../styles/globalStyles'
 
 export default function PicModal({pic, modalCloser, album}) {
-  MediaMeta.get(pic.uri)
-  .then(metadata => console.log({metadata}))
-  .catch(err => console.error(err))
-
   const deleteIcon = require('../assets/icons/delete.png')
 
   async function handleClickDeletePicture() {
